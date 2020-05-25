@@ -15,7 +15,7 @@
     <h3 class="center">Pesquisa de usuários</h3>
     <form>
       <input id="userInput" type="text" placeholder="Busca" />
-      <input class="waves-effect waves-light btn-small" id="userSubmit" type="submit" />
+      <input class="waves-effect waves-light btn-small disabled" id="userSubmit" type="submit" />
     </form>
 
     <div class="content-container">
@@ -23,7 +23,12 @@
         <div id="usersResult"></div>
       </div>
       <div class="result-container">
-        <div id="startsRresult"></div>
+        <h4>Estatísticas</h4>
+        <h6>Gênero masculino: <span id="totalGenderMale"></span></h6>
+        <h6>Gênero feminino: <span id="totalGenderFemale"></span></h6>
+        <h6>Soma das idades: <span id="totalStatsAge"></span></h6>
+        <h6>Média das idades: <span id="totalAverageAge"></span></h6>
+        <div id="statsResult"></div>
       </div>
 
     </div>
