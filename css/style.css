@@ -1,0 +1,24 @@
+form {
+  display: flex;
+  flex-direction: row;
+}
+
+#userInput {
+  height: 30px;
+  margin-right: 15px;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: row;
+
+
+}
+
+.result-container {
+  width: 400px;
+  padding: 15px;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  margin: 0 20px 20px;
+}
