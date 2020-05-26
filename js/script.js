@@ -15,9 +15,9 @@ let userArrayResult = [];
 
 
 window.addEventListener('load', () => {
-  userSubmit = document.querySelector('#userSubmit').addEventListener("submit", usersFilters);
-  userInput = document.querySelector('#userInput');
 
+  userSubmit = document.querySelector('#userSubmit');
+  userInput = document.querySelector('#userInput');
   usersResult = document.querySelector('#usersResult');
   statsResult = document.querySelector('#statsResult');
 
@@ -40,17 +40,26 @@ async function fetchUsers() {
       gender,
       name: name.first + " " + name.last,
       age: dob.age,
-      picture: picture.medium
+      picture: picture.thumbnail
     }
   });
-  console.log(userArray);
-  render();
+
+  activateButton();
 }
 
-function render() {
-  usersFilters()
+function activateButton() {
+  userInput.addEventListener('input', () => {
+    if (userInput.value != '') {
+      userSubmit.disabled = false;
+    }
+  });
+  doClick();
+}
+
+function doClick() {
+
 }
 
 function usersFilters() {
-  userArray
+
 }
