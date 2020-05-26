@@ -1,6 +1,8 @@
 let userSubmit = null;
 let userInput = null;
 
+let userFilter = null;
+
 let usersResult = null;
 let statsResult = null;
 
@@ -53,13 +55,23 @@ function activateButton() {
       userSubmit.disabled = false;
     }
   });
-  doClick();
+  inputClick();
 }
 
-function doClick() {
-
+function inputClick() {
+  userSubmit.addEventListener('click', () => {
+    userFilter = userArray.filter((user) =>
+      user.name.toLowerCase().indexOf(userInput.value.toLowerCase()) != -1
+    ).sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
+  })
+  render();
 }
 
-function usersFilters() {
-
+function render() {
+  const userHTML = `
+  <div id="userContainer">
+  <h4>${userFilter.length} usuário(s) encontrado(s)</h5>
+  `
 }
