@@ -21,3 +21,8 @@ form {
   border-radius: 5px;
   margin: 0 20px 20px;
 }
+
+#loading {
+  position: absolute;
+  margin: 50px 400px;
+}
