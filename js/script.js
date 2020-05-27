@@ -66,7 +66,7 @@ function userRender() {
   const tabUsersResult = document.querySelector('#tabUsersResult');
 
   let tabUsers = ` <div>
-  <h4>${userFilter.length} usuário(s) encontrado(s)</h4>
+  <h5>${userFilter.length} usuário(s) encontrado(s)</h5>
   `;
 
   userFilter.forEach((user) => {
@@ -77,7 +77,7 @@ function userRender() {
     } = user;
 
     const tabUser = `
-    <div>
+    <div class="user-data">
         <img src="${picture}" alt="${name}">
         <p>${name}, ${age} anos </p>
     </div>
@@ -91,26 +91,29 @@ function userRender() {
 function statsRender() {
   const tabStatsResult = document.querySelector('#tabStatsResult');
 
-  let globalMasc = 0;
-  let globalFem = 0;
-  let globaAgeSum = 0;
+  let genderMasc = 0;
+  let genderFem = 0;
+  let ageSum = 0;
+  let ageAverage = 0;
 
   userFilter.forEach((user) => {
     const {
       gender,
       age
     } = user;
-    gender === 'female' ? (globalFem += 1) : (globalMasc += 1);
-    globaAgeSum += age;
+    gender === 'female' ? (genderFem += 1) : (genderMasc += 1);
+    ageSum += age;
+    ageAverage = ageSum / userFilter.length;
+
   });
 
   let tabStats = `
   <div>
-  <h4>Estatísticas</h4>
-    <p>Gênero masculino: ${globalMasc}</p>
-    <p>Gênero feminino: ${globalFem}</p>
-    <p>Soma das idades: ${globaAgeSum}</p>
-    <p>Média das idades: ${globaAgeSum/ userFilter.length}</p>
+  <h5>Estatísticas</h5>
+    <p>Gênero masculino: ${genderMasc}</p>
+    <p>Gênero feminino: ${genderFem}</p>
+    <p>Soma das idades: ${ageSum}</p>
+    <p>Média das idades: ${ageAverage.toFixed(2)}</p>
   `;
   tabStatsResult.innerHTML = tabStats;
 }
