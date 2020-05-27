@@ -1,40 +1,29 @@
-let globaluserSubmit = null;
-let globaluserInput = null;
-
-let userFilter = null;
+let userArray = [];
+let userFilter = [];
 let preLoader = null;
 
-let usersResult = null;
-let statsResult = null;
 
-let countStatsAge = 0;
-let countAverageAge = 0;
-
-let totalStatsAge = 0;
-let totalAverageAge = 0;
-
-let userArray = [];
-let userArrayResult = [];
+let globalUserSubmit = document.querySelector('#userSubmit');
+let globalUserInput = document.querySelector('#userInput');
 
 window.addEventListener('load', () => {
-  globaluserSubmit = document.querySelector('#userSubmit');
-  globaluserInput = document.querySelector('#userInput');
-  usersResult = document.querySelector('#usersResult');
-  statsResult = document.querySelector('#statsResult');
-
-  numberFormat = Intl.NumberFormat('pt-BR');
-
   fetchUsers();
-  hideLoader();
 });
 
 async function fetchUsers() {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const res = await fetch(
     'https://randomuser.me/api/?seed=javascript&results=100&nat=BR&noinfo'
   );
+  await new Promise((resolve) => resolve(hideLoader()));
   const json = await res.json();
   userArray = json.results.map((user) => {
-    const { gender, name, dob, picture } = user;
+    const {
+      gender,
+      name,
+      dob,
+      picture
+    } = user;
     return {
       gender,
       name: name.first + ' ' + name.last,
@@ -47,40 +36,86 @@ async function fetchUsers() {
 }
 
 function activateButton() {
-  globaluserInput.addEventListener('input', () => {
-    if (globaluserInput.value != '') {
-      globaluserSubmit.disabled = false;
+  globalUserInput.addEventListener('input', () => {
+    if (globalUserInput.value != '') {
+      globalUserSubmit.disabled = false;
     }
   });
   inputClick();
 }
 
 function inputClick() {
-  globaluserSubmit.addEventListener('click', () => {
+  globalUserSubmit.addEventListener('click', (event) => {
+    event.preventDefault();
     userFilter = userArray
       .filter(
         (user) =>
-          user.name
-            .toLowerCase()
-            .indexOf(globaluserInput.value.toLowerCase()) != -1
+        user.name
+        .toLowerCase()
+        .indexOf(globalUserInput.value.toLowerCase()) != -1
       )
       .sort((a, b) => {
         return a.name.localeCompare(b.name);
       });
+    userRender();
   });
-  render();
 }
 
-function render() {
-  const userHTML = `
-  <div id="userContainer">
-  <h4>${userFilter.length} usuário(s) encontrado(s)</h5>
+function userRender() {
+
+  const tabUsersResult = document.querySelector('#tabUsersResult');
+
+  let tabUsers = ` <div>
+  <h4>${userFilter.length} usuário(s) encontrado(s)</h4>
   `;
+
+  userFilter.forEach((user) => {
+    const {
+      name,
+      age,
+      picture
+    } = user;
+
+    const tabUser = `
+    <div>
+        <img src="${picture}" alt="${name}">
+        <p>${name}, ${age} anos </p>
+    </div>
+    `;
+    tabUsers += tabUser;
+  });
+  tabUsersResult.innerHTML = tabUsers;
+  statsRender();
+}
+
+function statsRender() {
+  const tabStatsResult = document.querySelector('#tabStatsResult');
+
+  let globalMasc = 0;
+  let globalFem = 0;
+  let globaAgeSum = 0;
+
+  userFilter.forEach((user) => {
+    const {
+      gender,
+      age
+    } = user;
+    gender === 'female' ? (globalFem += 1) : (globalMasc += 1);
+    globaAgeSum += age;
+  });
+
+  let tabStats = `
+  <div>
+  <h4>Estatísticas</h4>
+    <p>Gênero masculino: ${globalMasc}</p>
+    <p>Gênero feminino: ${globalFem}</p>
+    <p>Soma das idades: ${globaAgeSum}</p>
+    <p>Média das idades: ${globaAgeSum/ userFilter.length}</p>
+  `;
+  tabStatsResult.innerHTML = tabStats;
 }
 
 function hideLoader() {
   preLoader = document.querySelector('#loading');
-  setTimeout(function () {
-    preLoader.classList.add('hide');
-  }, 2000);
+  preLoader.classList.add('hide');
 }
